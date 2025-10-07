@@ -1,0 +1,407 @@
+sources-of-energy/
+├─ pom.xml
+├─ src/
+│  ├─ main/
+│  │  ├─ java/
+│  │  │  └─ com/example/energy/
+│  │  │     ├─ SourcesOfEnergyApplication.java
+│  │  │     └─ controller/
+│  │  │        └─ SiteController.java
+│  │  ├─ resources/
+│  │     ├─ templates/
+│  │     │  ├─ layout.html
+│  │     │  ├─ index.html
+│  │     │  ├─ team.html
+│  │     │  ├─ entries.html
+│  │     │  ├─ reflection.html
+│  │     │  ├─ sources.html
+│  │     │  └─ video.html
+│  │     └─ static/
+│  │        ├─ css/
+│  │        │  └─ style.css
+│  │        └─ js/
+│  │           └─ main.js
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>com.example</groupId>
+  <artifactId>sources-of-energy</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
+  <parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.2.0</version> <!-- any recent Spring Boot version -->
+    <relativePath/>
+  </parent>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-thymeleaf</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-web</artifactId>
+    </dependency>
+    <!-- Optional: devtools for live reload -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-devtools</artifactId>
+      <scope>runtime</scope>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>org.thymeleaf.extras</groupId>
+      <artifactId>thymeleaf-extras-java8time</artifactId>
+    </dependency>
+  </dependencies>
+
+  <properties>
+    <java.version>17</java.version>
+  </properties>
+
+  <build>
+    <plugins>
+      <plugin>
+        <groupId>org.springframework.boot</groupId>
+        <artifactId>spring-boot-maven-plugin</artifactId>
+      </plugin>
+    </plugins>
+  </build>
+</project>
+package com.example.energy;
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
+@SpringBootApplication
+public class SourcesOfEnergyApplication {
+    public static void main(String[] args) {
+        SpringApplication.run(SourcesOfEnergyApplication.class, args);
+    }
+}package com.example.energy.controller;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import java.util.*;
+
+@Controller
+public class SiteController {
+
+    @GetMapping("/")
+    public String index(Model model) {
+        model.addAttribute("title", "Sources of Energy Facts and Misconceptions");
+        model.addAttribute("subtitle", "A Science & Logic Compilation");
+        return "index";
+    }
+
+    @GetMapping("/team")
+    public String team(Model model) {
+        List<String> members = Arrays.asList(
+                "Harder, Joe Rychel (leader)",
+                "Folgar, Ariana",
+                "Manalo, Nikol",
+                "Manejar, Jameela",
+                "Maquiran, Jude Angelo",
+                "Moreno, Khrizzia Joy",
+                "Samino, Rheanna Quenneth"
+        );
+        model.addAttribute("members", members);
+        return "team";
+    }
+
+    @GetMapping("/entries")
+    public String entries(Model model) {
+        List<Map<String,String>> entries = new ArrayList<>();
+
+        // Entry 1: HARDER
+        Map<String,String> e1 = new HashMap<>();
+        e1.put("title", "“Solar panels become completely useless when it’s cloudy.”");
+        e1.put("proposition", "If the sky is cloudy, then solar panels produce no electricity. (C → E)");
+        e1.put("truth", "False – Solar panels will still work, no matter the weather condition.");
+        e1.put("explanation", "Even when skies seem to be completely covered in clouds, some sunlight can still reach the Earth by scattering (diffuse solar radiation). Solar panels can convert this sunlight into electricity, though not as powerful as under full sun. In fact, solar panels don’t depend only on direct sunlight. According to the U.S. Department of Energy, “solar technology can be leveraged in virtually any condition, including rainy and snowy days … some sunlight still reaches the earth.”");
+        e1.put("author", "Harder");
+        entries.add(e1);
+
+        // Entry 2: FOLGAR
+        Map<String,String> e2 = new HashMap<>();
+        e2.put("title", "“Solar energy is the cleanest energy source because it has zero environmental impact.”");
+        e2.put("proposition", "S = Solar energy is used; Z = Zero environmental impact; Symbolized: S & Z");
+        e2.put("truth", "False – The statement is false because while solar power is significantly cleaner than fossil fuels, saying it has “zero environmental impact” is an exaggeration.");
+        e2.put("explanation", "Solar technologies do not produce air pollution or greenhouse gases during operation. However, producing and deploying solar panels and infrastructure can have environmental effects (manufacturing, land use, resource extraction, end-of-life disposal). Using solar often reduces larger environmental impacts by replacing fossil fuels.");
+        e2.put("author", "Folgar");
+        entries.add(e2);
+
+        // Entry 3: MANEJAR
+        Map<String,String> e3 = new HashMap<>();
+        e3.put("title", "“Wind turbines can operate efficiently in any location.”");
+        e3.put("proposition", "If a location has wind turbines, then they operate efficiently. (P → Q)");
+        e3.put("truth", "False – Wind efficiency depends on wind speed and consistency.");
+        e3.put("explanation", "Wind turbines require consistent wind speeds (typically above ~6 m/s) to be productive. Coastal areas, plains, and high-altitude sites are ideal. In low-wind zones turbines may underperform, so site selection is critical.");
+        e3.put("author", "Manejar");
+        entries.add(e3);
+
+        // Entry 4: MANALO
+        Map<String,String> e4 = new HashMap<>();
+        e4.put("title", "“Solar panels generate electricity when exposed to sunlight.”");
+        e4.put("proposition", "If sunlight strikes a solar panel (S), then electricity is generated (E). (S → E)");
+        e4.put("truth", "True – Solar panels reliably produce electricity when sunlight reaches their surface (output varies with intensity/conditions).");
+        e4.put("explanation", "Photons from sunlight are absorbed by PV cells and converted to electricity via the photovoltaic effect. Output depends on sunlight intensity, orientation, panel efficiency, and weather.");
+        e4.put("author", "Manalo");
+        entries.add(e4);
+
+        // Entry 5: MORENO
+        Map<String,String> e5 = new HashMap<>();
+        e5.put("title", "“Solar energy is a renewable and sustainable energy source.”");
+        e5.put("proposition", "If energy comes from the sun, then it is renewable and sustainable. (P → Q)");
+        e5.put("truth", "True – The sun provides an effectively inexhaustible energy supply over human time scales.");
+        e5.put("explanation", "Solar energy is renewable because sunlight is continuously available for billions of years; it is sustainable in that it emits no greenhouse gases during operation and does not deplete resources like fossil fuels.");
+        e5.put("author", "Moreno");
+        entries.add(e5);
+
+        model.addAttribute("entries", entries);
+        return "entries";
+    }
+
+    @GetMapping("/reflection")
+    public String reflection() {
+        return "reflection";
+    }
+
+    @GetMapping("/sources")
+    public String sources() {
+        return "sources";
+    }
+
+    @GetMapping("/video")
+    public String video() {
+        return "video";
+    }
+}<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title th:text="${title} ?: 'Sources of Energy'">Sources of Energy</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+  <header class="site-header">
+    <div class="brand">
+      <h1><a th:href="@{/}">Sources of Energy</a></h1>
+      <p class="subtitle">A Science &amp; Logic Compilation</p>
+    </div>
+    <nav class="main-nav">
+      <a th:href="@{/team}">Team</a>
+      <a th:href="@{/entries}">Entries</a>
+      <a th:href="@{/reflection}">Reflection</a>
+      <a th:href="@{/sources}">Sources</a>
+      <a th:href="@{/video}">Video</a>
+    </nav>
+  </header>
+
+  <main class="container" th:fragment="content">
+    <!-- page content will be inserted here -->
+    <div th:replace="${pageContent}"></div>
+  </main>
+
+  <footer class="site-footer">
+    <div>© <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> Sources of Energy — Earth Science • Empowerment Technologies • General Mathematics</div>
+  </footer>
+
+  <script th:src="@{/js/main.js}"></script>
+</body>
+</html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+  <div>
+    <section class="hero">
+      <h2>Sources of Energy Facts and Misconceptions</h2>
+      <p class="lead">A cross-subject compilation about energy — science, logic, and clear thinking.</p>
+      <div class="quick-links">
+        <a class="card" th:href="@{/entries}">Read Entries</a>
+        <a class="card" th:href="@{/team}">Meet the Team</a>
+      </div>
+    </section>
+
+    <section class="overview">
+      <h3>About this project</h3>
+      <p>This site collects short logical propositions and scientific explanations to clarify common statements about energy sources. Designed for classroom display with a school-like layout and a green theme.</p>
+    </section>
+  </div>
+</html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+  <div>
+    <h2>Team</h2>
+    <div class="team-list">
+      <ul>
+        <li th:each="m : ${members}" th:text="${m}">Member</li>
+      </ul>
+    </div>
+  </div>
+</html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+  <div>
+    <h2>Entries</h2>
+    <div class="entries">
+      <article class="entry" th:each="e,iterStat : ${entries}">
+        <h3 th:text="${e.title}">Statement title</h3>
+        <p><strong>Logical Proposition:</strong> <span th:text="${e.proposition}"></span></p>
+        <p><strong>Truth Value:</strong> <span th:text="${e.truth}"></span></p>
+        <div class="explanation">
+          <h4>Scientific Explanation</h4>
+          <p th:text="${e.explanation}"></p>
+          <p class="author">— <span th:text="${e.author}"></span></p>
+        </div>
+      </article>
+    </div>
+  </div>
+</html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+  <div>
+    <h2>Reflection</h2>
+    <p class="placeholder">Space reserved for reflection notes. (You can add content here later.)</p>
+  </div>
+</html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+  <div>
+    <h2>Sources</h2>
+    <p class="placeholder">Space reserved for citations and links. (Add sources later.)</p>
+  </div>
+</html>
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" th:replace="layout :: content">
+  <div>
+    <h2>Video</h2>
+    <p class="placeholder">Space reserved for an embedded video. Replace the iframe src with your video URL.</p>
+
+    <!-- Example embed (replace "VIDEO_ID" with real id) -->
+    <div class="video-wrap">
+      <iframe width="560" height="315" src="https://www.youtube.com/embed/VIDEO_ID" title="YouTube video"
+              frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+    </div>
+  </div>
+</html>
+/* Basic reset */
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: "Segoe UI", Roboto, Arial, sans-serif; }
+
+:root{
+  --green-700: #2b7a4b;
+  --green-500: #3aa26a;
+  --green-300: #8fd6a4;
+  --accent: #f6f8f3;
+  --muted: #6b6b6b;
+}
+
+body {
+  background: linear-gradient(180deg, #f7fbf8 0%, #ffffff 100%);
+  color: #123229;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.site-header{
+  background: var(--green-700);
+  color: white;
+  padding: 18px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  box-shadow: 0 3px 8px rgba(0,0,0,0.08);
+}
+
+.site-header a { color: white; text-decoration: none; }
+.brand h1 { margin-bottom: 2px; font-size: 1.3rem; }
+.subtitle { font-size: 0.9rem; color: rgba(255,255,255,0.9); }
+
+.main-nav a {
+  margin-left: 14px;
+  padding: 8px 12px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.06);
+  text-decoration: none;
+  color: white;
+  font-weight: 600;
+}
+
+.container {
+  width: 1100px;
+  max-width: calc(100% - 48px);
+  margin: 28px auto;
+  flex: 1;
+}
+
+.hero {
+  background: linear-gradient(90deg, rgba(58,162,106,0.08), rgba(143,214,164,0.03));
+  border-left: 6px solid var(--green-500);
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 18px;
+}
+
+.hero h2 { color: var(--green-700); margin-bottom: 6px; }
+.lead { color: var(--muted); margin-bottom: 12px; }
+
+.quick-links { display:flex; gap:12px; }
+.card {
+  display:inline-block;
+  padding:10px 14px;
+  background: var(--green-500);
+  color: white;
+  border-radius:6px;
+  text-decoration:none;
+  font-weight:600;
+}
+
+.overview { margin-top: 16px; padding: 12px; background: white; border-radius:6px; box-shadow: 0 2px 6px rgba(0,0,0,0.03); }
+
+.entries .entry {
+  background: white;
+  padding: 14px;
+  margin-bottom: 12px;
+  border-left: 6px solid var(--green-300);
+  border-radius: 6px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.03);
+}
+
+.entries h3 { color: var(--green-700); margin-bottom: 6px; }
+.entry .explanation { margin-top: 8px; color: #2b2b2b; }
+.author { margin-top:8px; font-style: italic; color: var(--muted); }
+
+.team-list ul { list-style-type: square; padding-left: 18px; margin-top: 8px; }
+.placeholder { color: var(--muted); background: #fff; border: 1px dashed #e6efe2; padding: 18px; border-radius: 6px; }
+
+.site-footer {
+  background: #f1f7f0;
+  color: #31583a;
+  padding: 14px 22px;
+  text-align: center;
+  font-size: 0.95rem;
+  border-top: 1px solid rgba(0,0,0,0.04);
+}
+
+/* Responsive */
+@media (max-width: 800px) {
+  .site-header { flex-direction: column; gap: 12px; align-items:flex-start; }
+  .main-nav { display: flex; gap: 8px; flex-wrap:wrap; }
+  .container { width: calc(100% - 36px); }
+}
+// src/main/resources/static/js/main.js
+// small accessibility + interactivity helpers if needed
+document.addEventListener('DOMContentLoaded', function(){
+  // Focus on the first h2 for keyboard users on page load
+  const h2 = document.querySelector('main h2');
+  if(h2) { h2.setAttribute('tabindex','-1'); h2.focus(); }
+});
